@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+                          http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+    <kcfgfile name=""/>
+    <group name="General">
+        <entry name="simulationMode" type="Bool">
+            <label>Use fixture data instead of calling the tailscale CLI (demo / screenshots / dev without Tailscale installed).</label>
+            <default>false</default>
+        </entry>
+        <entry name="pollIntervalMs" type="Int">
+            <label>Poll interval in milliseconds.</label>
+            <default>5000</default>
+            <min>1000</min>
+            <max>300000</max>
+        </entry>
+    </group>
+</kcfg>

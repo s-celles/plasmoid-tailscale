@@ -13,11 +13,13 @@ A KDE Plasma 6 applet for [Tailscale](https://tailscale.com/): status, toggle, p
 - **Middle-click** the tray icon → quick toggle without opening the popup
 - Tooltip shows current state + IP + peer count
 - Polls `tailscale status --json` every 5 s (via Plasma's `executable` DataSource)
+- **Simulation mode** built-in: show a fake tailnet (NATO-phonetic hostnames, CGNAT IPs) for demos / screenshots / dev without Tailscale installed
 
 ## Screenshots
 
-<!-- Add screenshots here once available -->
-_TODO_
+![Popup showing peers list](./screenshots/popup.png)
+
+_Screenshot taken with **simulation mode** enabled (see [Simulation mode](#simulation-mode)) — NATO-phonetic hostnames and CGNAT IPs from the fixture, not from a real tailnet._
 
 ## Requirements
 
@@ -73,16 +75,34 @@ done
 kquitapp6 plasmashell && setsid plasmashell >/dev/null 2>&1 < /dev/null &
 ```
 
+## Simulation mode
+
+Right-click the applet → **Configure Tailscale…** → enable **Simulation mode**. The applet then ignores the real `tailscale` CLI and renders fixture data:
+
+- `demo-host · 100.64.99.1` as the self entry
+- Seven peers named **alpha, bravo, charlie, delta, echo, foxtrot, golf** with CGNAT IPs under `100.64.99.0/24` and a mix of OS and online/offline states
+- Toggle still works — it flips a local `BackendState` between `Running` and `Stopped`, no `tailscale up/down` is ever invoked
+
+Use it for:
+
+- Taking screenshots without leaking real hostnames / IPs
+- Demoing the applet on a machine where Tailscale isn't installed
+- UI development — no network round-trips, predictable state
+
+You can also tune the polling interval from the same settings page (default 5 s).
+
 ## How it works
 
 | Piece | Purpose |
 |---|---|
 | `metadata.json` | Plasma 6 package descriptor, declares systray eligibility |
 | `contents/ui/main.qml` | All of the logic: `PlasmoidItem` with `compactRepresentation` (tray icon) and `fullRepresentation` (popup) |
+| `contents/config/main.xml` | KConfigXT schema declaring `simulationMode` + `pollIntervalMs` |
+| `contents/config/config.qml` + `contents/ui/configGeneral.qml` | Settings dialog (right-click → Configure) |
 | `P5Support.DataSource` (engine `executable`) | Runs `tailscale status --json` and parses the JSON |
 | `TextEdit` helper | Copies peer IPs to the clipboard via `selectAll() + copy()` |
 
-Polling is a hard 5 s timer. Toggle commands are fire-and-forget through `pkexec`; once they return, a refresh is scheduled via `Qt.callLater`.
+Polling uses a configurable timer (default 5 s, tunable in settings). Toggle commands are fire-and-forget through `pkexec`; once they return, a refresh is scheduled via `Qt.callLater`.
 
 ## Limitations
 
@@ -102,15 +122,7 @@ kquitapp6 plasmashell && setsid plasmashell >/dev/null 2>&1 < /dev/null &
 
 Debug logs from QML end up on plasmashell's stderr (use `journalctl --user -f` or redirect plasmashell output when restarting).
 
-To test the popup without Tailscale installed, feed a canned JSON to `ds.run()` from the QML debugger, or mock the `tailscale` binary:
-
-```bash
-sudo tee /usr/local/bin/tailscale <<'EOF'
-#!/bin/bash
-[ "$2" = "--json" ] && exec cat /tmp/ts-fixture.json
-EOF
-sudo chmod +x /usr/local/bin/tailscale
-```
+To develop without Tailscale installed or without touching a real tailnet, enable **Simulation mode** (see [above](#simulation-mode)). The fixture data lives inline in `main.qml` — edit `fixtureStatus` to test edge cases (empty tailnet, slow Self, exotic OS names, etc.).
 
 ## Packaging a release
 
@@ -129,4 +141,4 @@ Upload that to [store.kde.org](https://store.kde.org/) under *Plasma 6 Addons �
 
 - [Tailscale](https://tailscale.com/)
 - [KDE Plasma 6 applet documentation](https://develop.kde.org/docs/plasma/widget/)
-- [awesome-tailscale](https://github.com/tailscale/awesome-tailscale)
+- [awesome-tailscale](https://github.com/tailscale-dev/awesome-tailscale)

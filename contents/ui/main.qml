@@ -80,17 +80,53 @@ PlasmoidItem {
         root.tsPeers = peers;
     }
 
+    // Données fictives utilisées quand simulationMode=true. Noms OTAN +
+    // IPs CGNAT (100.64.0.0/10) volontairement différentes d'un vrai
+    // tailnet → safe pour demos, screenshots, dev sans Tailscale.
+    readonly property var fixtureStatus: ({
+        BackendState: "Running",
+        Self: {
+            HostName: "demo-host",
+            TailscaleIPs: ["100.64.99.1"]
+        },
+        Peer: {
+            "alpha":   { HostName: "alpha",   DNSName: "alpha.example.ts.net.",   TailscaleIPs: ["100.64.99.10"], OS: "linux",   Online: true  },
+            "bravo":   { HostName: "bravo",   DNSName: "bravo.example.ts.net.",   TailscaleIPs: ["100.64.99.11"], OS: "linux",   Online: true  },
+            "charlie": { HostName: "charlie", DNSName: "charlie.example.ts.net.", TailscaleIPs: ["100.64.99.12"], OS: "macOS",   Online: true  },
+            "delta":   { HostName: "delta",   DNSName: "delta.example.ts.net.",   TailscaleIPs: ["100.64.99.13"], OS: "windows", Online: false },
+            "echo":    { HostName: "echo",    DNSName: "echo.example.ts.net.",    TailscaleIPs: ["100.64.99.14"], OS: "android", Online: true  },
+            "foxtrot": { HostName: "foxtrot", DNSName: "foxtrot.example.ts.net.", TailscaleIPs: ["100.64.99.15"], OS: "iOS",     Online: true  },
+            "golf":    { HostName: "golf",    DNSName: "golf.example.ts.net.",    TailscaleIPs: ["100.64.99.16"], OS: "linux",   Online: false }
+        }
+    })
+
     function refresh() {
+        if (Plasmoid.configuration.simulationMode) {
+            root.parseStatus(root.fixtureStatus);
+            root.lastError = "";
+            return;
+        }
         ds.run("tailscale status --json 2>&1");
     }
 
     function toggleConnection() {
+        if (Plasmoid.configuration.simulationMode) {
+            // En mode démo, on bascule juste BackendState localement.
+            root.tsBackendState = tsRunning ? "Stopped" : "Running";
+            if (!tsRunning) {
+                root.tsPeers = [];
+                root.tsIP = "";
+            } else {
+                root.parseStatus(root.fixtureStatus);
+            }
+            return;
+        }
         var cmd = tsRunning ? "tailscale down" : "tailscale up";
         ds.run("pkexec " + cmd + " 2>&1");
     }
 
     Timer {
-        interval: 5000
+        interval: Plasmoid.configuration.pollIntervalMs
         running: true
         repeat: true
         triggeredOnStart: true
