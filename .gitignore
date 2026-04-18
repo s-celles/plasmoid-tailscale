@@ -1,0 +1,8 @@
+*.bak
+*.bak.*
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+/dist/
+/*.plasmoid
