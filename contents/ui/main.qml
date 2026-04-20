@@ -21,11 +21,11 @@ PlasmoidItem {
     Plasmoid.status: PlasmaCore.Types.ActiveStatus
 
     toolTipMainText: tsRunning
-        ? i18n("Tailscale : connecté")
-        : i18n("Tailscale : déconnecté")
+        ? i18n("Tailscale: connected")
+        : i18n("Tailscale: disconnected")
     toolTipSubText: tsRunning
-        ? (tsIP + " · " + tsPeers.length + " " + i18np("pair", "pairs", tsPeers.length))
-        : i18n("Clic pour ouvrir")
+        ? (tsIP + " · " + i18np("%1 peer", "%1 peers", tsPeers.length))
+        : i18n("Click to open")
 
     P5Support.DataSource {
         id: ds
@@ -191,7 +191,7 @@ PlasmoidItem {
                     PlasmaComponents.Label {
                         text: root.tsRunning
                             ? (root.tsHostname + " · " + root.tsIP)
-                            : i18n("Déconnecté")
+                            : i18n("Disconnected")
                         elide: Text.ElideRight
                         opacity: 0.7
                         Layout.fillWidth: true
@@ -200,7 +200,7 @@ PlasmoidItem {
                 }
 
                 PlasmaComponents.Button {
-                    text: root.tsRunning ? i18n("Désactiver") : i18n("Activer")
+                    text: root.tsRunning ? i18n("Disconnect") : i18n("Connect")
                     icon.name: root.tsRunning ? "network-disconnect" : "network-connect"
                     onClicked: root.toggleConnection()
                 }
@@ -214,7 +214,7 @@ PlasmoidItem {
             PlasmaComponents.Label {
                 Layout.fillWidth: true
                 Layout.margins: Kirigami.Units.smallSpacing
-                text: i18n("Machines du tailnet") + " (" + root.tsPeers.length + ")"
+                text: i18n("Tailnet machines") + " (" + root.tsPeers.length + ")"
                 font.bold: true
                 visible: root.tsPeers.length > 0
             }
@@ -290,7 +290,7 @@ PlasmoidItem {
                 }
             }
 
-            // État vide / erreur
+            // Empty / error state
             PlasmaExtras.PlaceholderMessage {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -298,11 +298,11 @@ PlasmoidItem {
                 visible: root.tsPeers.length === 0
                 iconName: root.tsRunning ? "network-vpn" : "network-disconnect"
                 text: root.tsRunning
-                    ? i18n("Aucun pair dans le tailnet")
-                    : i18n("Tailscale est désactivé")
+                    ? i18n("No peers in the tailnet")
+                    : i18n("Tailscale is disabled")
                 explanation: root.tsRunning
                     ? ""
-                    : (root.lastError !== "" ? root.lastError : i18n("Active la connexion pour voir les machines"))
+                    : (root.lastError !== "" ? root.lastError : i18n("Enable the connection to see machines"))
             }
         }
     }

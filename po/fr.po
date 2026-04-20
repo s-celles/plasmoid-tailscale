@@ -1,0 +1,89 @@
+# French translation of plasmoid-tailscale.
+# Copyright (C) 2026 Sébastien Celles
+# This file is distributed under the same licence as the plasmoid-tailscale
+# package.
+# Sébastien Celles <s.celles@gmail.com>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasmoid-tailscale 0.1\n"
+"Report-Msgid-Bugs-To: s.celles@gmail.com\n"
+"POT-Creation-Date: 2026-04-20 12:00+0200\n"
+"PO-Revision-Date: 2026-04-20 12:00+0200\n"
+"Last-Translator: Sébastien Celles <s.celles@gmail.com>\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: contents/ui/main.qml:24
+msgid "Tailscale: connected"
+msgstr "Tailscale : connecté"
+
+#: contents/ui/main.qml:25
+msgid "Tailscale: disconnected"
+msgstr "Tailscale : déconnecté"
+
+#: contents/ui/main.qml:27
+msgid "%1 peer"
+msgid_plural "%1 peers"
+msgstr[0] "%1 pair"
+msgstr[1] "%1 pairs"
+
+#: contents/ui/main.qml:28
+msgid "Click to open"
+msgstr "Cliquer pour ouvrir"
+
+#: contents/ui/main.qml:194
+msgid "Disconnected"
+msgstr "Déconnecté"
+
+#: contents/ui/main.qml:203
+msgid "Disconnect"
+msgstr "Désactiver"
+
+#: contents/ui/main.qml:203
+msgid "Connect"
+msgstr "Activer"
+
+#: contents/ui/main.qml:217
+msgid "Tailnet machines"
+msgstr "Machines du tailnet"
+
+#: contents/ui/main.qml:301
+msgid "No peers in the tailnet"
+msgstr "Aucun pair dans le tailnet"
+
+#: contents/ui/main.qml:302
+msgid "Tailscale is disabled"
+msgstr "Tailscale est désactivé"
+
+#: contents/ui/main.qml:305
+msgid "Enable the connection to see machines"
+msgstr "Active la connexion pour voir les machines"
+
+#: contents/ui/configGeneral.qml:12
+msgid "Simulation mode:"
+msgstr "Mode simulation :"
+
+#: contents/ui/configGeneral.qml:13
+msgid "Use fixture data (demo / screenshots)"
+msgstr "Utiliser des données fictives (démo / captures)"
+
+#: contents/ui/configGeneral.qml:22
+msgid ""
+"When enabled, the applet shows a fake tailnet with NATO-phonetic hostnames "
+"(alpha, bravo, …) and CGNAT IPs — the tailscale CLI is never called. Useful "
+"for demos, taking screenshots without leaking real hostnames/IPs, or "
+"developing without Tailscale installed."
+msgstr ""
+"Une fois activé, l'applet affiche un faux tailnet avec des noms d'hôte de "
+"l'alphabet OTAN (alpha, bravo, …) et des IP CGNAT — la CLI tailscale n'est "
+"jamais appelée. Utile pour des démos, faire des captures d'écran sans "
+"divulguer de vrais noms d'hôtes / IP, ou développer sans Tailscale installé."
+
+#: contents/ui/configGeneral.qml:29
+msgid "Poll interval:"
+msgstr "Intervalle de polling :"
