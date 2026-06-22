@@ -4,8 +4,10 @@
         "Id": "org.scelles.tailscale",
         "Name": "Tailscale",
         "Name[fr]": "Tailscale",
+        "Name[de]": "Tailscale",
         "Description": "Tailscale status and control: connect/disconnect, peers list, IP.",
         "Description[fr]": "État et contrôle Tailscale : connexion, liste des pairs, IP.",
+        "Description[de]": "Tailscale Status und Kontrolle: Verbinden/Trennen, Liste der Nutzer, IP.",
         "Icon": "network-vpn",
         "Authors": [
             {
